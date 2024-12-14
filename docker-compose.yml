@@ -1,10 +1,20 @@
-version: '3'
+version: '3.8'
+
 services:
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:80"
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+    container_name: fastapi-backend
     ports:
-      - "8000:8000"
+      - "8000:8000" # Map FastAPI's port
+    volumes:
+      - ./backend:/app # Optional, for development
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: react-frontend
+    ports:
+      - "3000:80" # React app served via Nginx on port 80
+    restart: always
